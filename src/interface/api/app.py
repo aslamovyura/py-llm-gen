@@ -1,5 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from .routes.client import router as client_router
+from .routes.user import router as user_router
+from .routes.offer import router as offer_router
+from .routes.request import router as request_router
+from .routes.equipment import router as equipment_router
 
 def create_app() -> FastAPI:
     app = FastAPI(
@@ -16,6 +21,13 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    # Include routers
+    app.include_router(client_router)
+    app.include_router(user_router)
+    app.include_router(offer_router)
+    app.include_router(request_router)
+    app.include_router(equipment_router)
 
     @app.get("/health")
     async def health_check():
