@@ -66,6 +66,31 @@ poetry run mypy .
 poetry run flake8
 ```
 
+## Database Population
+
+The project includes a script to populate the database with test data. Before running the script, ensure that:
+
+1. PostgreSQL is running and accessible
+2. The database connection details in `.env` are correct
+3. The database exists and is accessible
+
+To populate the database with test data:
+
+```bash
+# Set PYTHONPATH to include the project root
+export PYTHONPATH=$PYTHONPATH:$(pwd)
+
+# Run the populate script
+python src/infrastructure/database/scripts/populate_db.py
+```
+
+The script will create:
+- 10 users with different roles (admin, manager, user)
+- 20 clients
+- 30 pieces of equipment
+- Multiple requests for each client
+- Multiple offers for each request
+
 ## License
 
 MIT

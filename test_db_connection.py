@@ -4,7 +4,7 @@ def test_connection():
     try:
         # Connect to the database using localhost and port 5433
         conn = psycopg2.connect(
-            host="localhost",
+            host="0.0.0.0",
             port=5433,
             database="equipment_db",
             user="postgres",
