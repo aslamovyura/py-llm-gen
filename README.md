@@ -1,44 +1,40 @@
-# DB Search Project
+# Py-LLM-Gen
 
-A Python-based project implementing clean architecture principles for searching deals in a database.
+A clean architecture Python project for database search, built with Python 3.12.
 
 ## Project Structure
 
+The project follows clean architecture principles with the following layers:
+
 ```
-.
-├── src/
-│   ├── domain/           # Domain layer containing business logic and entities
-│   ├── application/      # Application layer with use cases
-│   ├── infrastructure/   # Infrastructure layer with database adapters
-│   └── api/             # API layer for user interaction
-├── tests/               # Test directory mirroring src structure
-├── pyproject.toml       # Poetry project configuration
-└── README.md           # Project documentation
+src/
+├── domain/           # Core business logic and entities
+│   ├── entities/     # Business objects
+│   ├── repositories/ # Repository interfaces
+│   └── services/     # Domain services
+├── application/      # Use cases and business rules
+│   ├── use_cases/    # Business use cases
+│   ├── dto/          # Data Transfer Objects
+│   └── services/     # Application services
+├── infrastructure/   # External implementations
+│   ├── database/     # Database adapters
+│   ├── api/          # External API clients
+│   └── repositories/ # Repository implementations
+└── interface/       # User interaction
+    ├── api/         # REST/GraphQL endpoints
+    ├── web/         # Web interface
+    └── cli/         # Command line interface
 ```
-
-## Layers
-
-- **Domain Layer**: Contains business logic, entities, and interfaces
-- **Application Layer**: Implements use cases and orchestrates domain logic
-- **Infrastructure Layer**: Provides concrete implementations of interfaces
-- **API Layer**: Handles user interaction and request/response formatting
-
-## Prerequisites
-
-- Python 3.9 or higher
-- Poetry (Python package manager)
 
 ## Setup
 
-1. Install Poetry if you haven't already:
+1. Install Poetry:
 ```bash
-curl -sSL https://install.python-poetry.org | python3 -
+pip install poetry
 ```
 
-2. Clone the repository and install dependencies:
+2. Install dependencies:
 ```bash
-git clone <repository-url>
-cd db-search
 poetry install
 ```
 
@@ -49,81 +45,27 @@ poetry shell
 
 ## Development
 
-### Code Quality Tools
-
-The project uses several tools to maintain code quality:
-
-- **Black**: Code formatting
-- **isort**: Import sorting
-- **mypy**: Static type checking
-- **ruff**: Fast Python linter
-- **bandit**: Security linter
-- **safety**: Dependency security checker
-
-### Development Commands
-
-Format code:
+- Format code:
 ```bash
-poetry run black src/ tests/
-poetry run isort src/ tests/
+poetry run black .
+poetry run isort .
 ```
 
-Run linters:
-```bash
-poetry run ruff check src/ tests/
-poetry run mypy src/
-poetry run bandit -r src/
-poetry run safety check
-```
-
-Run tests with coverage:
+- Run tests:
 ```bash
 poetry run pytest
 ```
 
-### Pre-commit Hooks
-
-Install pre-commit hooks:
+- Type checking:
 ```bash
-poetry run pre-commit install
+poetry run mypy .
 ```
 
-The pre-commit hooks will automatically run the following checks before each commit:
-- Code formatting (black, isort)
-- Linting (ruff)
-- Type checking (mypy)
-- Security checks (bandit)
-
-## Running the Application
-
-1. Set up environment variables:
+- Linting:
 ```bash
-cp .env.example .env
-# Edit .env with your configuration
+poetry run flake8
 ```
-
-2. Start the FastAPI server:
-```bash
-poetry run uvicorn src.api.routes:app --reload
-```
-
-The API will be available at `http://localhost:8000`
-
-## Database Migrations
-
-To create and apply database migrations:
-```bash
-poetry run alembic revision --autogenerate -m "description"
-poetry run alembic upgrade head
-```
-
-## Contributing
-
-1. Create a new branch for your feature
-2. Make your changes
-3. Run all quality checks
-4. Submit a pull request
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT
