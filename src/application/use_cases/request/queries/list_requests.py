@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional, List
 from ...base import Query, QueryHandler
-from ....repositories.request import RequestRepository
-from ....entities.request import Request
+from src.infrastructure.repositories.request import RequestRepository
+from src.domain.entities.request import Request
 
 @dataclass
 class ListRequestsQuery(Query):

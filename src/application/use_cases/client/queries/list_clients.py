@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional, List
+
+from src.domain.entities.client import Client
+from src.infrastructure.repositories.client import ClientRepository
 from ...base import Query, QueryHandler
-from ....repositories.client import ClientRepository
-from ....entities.client import Client
 
 @dataclass
 class ListClientsQuery(Query):

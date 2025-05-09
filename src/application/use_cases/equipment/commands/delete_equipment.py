@@ -1,10 +1,12 @@
 from dataclasses import dataclass
+
+from src.infrastructure.repositories.equipment import EquipmentRepository
 from ...base import Command, CommandHandler
-from ....repositories.equipment import EquipmentRepository
+
 
 @dataclass
 class DeleteEquipmentCommand(Command):
-    equipment_id: str
+    equipment_id: int
 
 class DeleteEquipmentHandler(CommandHandler[DeleteEquipmentCommand]):
     def __init__(self, repository: EquipmentRepository):

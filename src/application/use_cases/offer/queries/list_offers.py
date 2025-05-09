@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional, List
 from ...base import Query, QueryHandler
-from ....repositories.offer import OfferRepository
-from ....entities.offer import Offer
+from src.infrastructure.repositories.offer import OfferRepository
+from src.domain.entities.offer import Offer
 
 @dataclass
 class ListOffersQuery(Query):

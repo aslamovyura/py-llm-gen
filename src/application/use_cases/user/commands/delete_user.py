@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from ...base import Command, CommandHandler
-from ....repositories.user import UserRepository
+from src.infrastructure.repositories.user import UserRepository
 from src.infrastructure.di.dependencies import inject_repository
 
 @dataclass

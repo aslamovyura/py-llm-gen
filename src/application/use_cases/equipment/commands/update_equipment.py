@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from typing import Optional, Dict, List
 from ...base import Command, CommandHandler
-from ....dto.equipment import UpdateEquipmentDTO
-from ....repositories.equipment import EquipmentRepository
-from ....entities.equipment import Equipment
+from src.application.dto.equipment import EquipmentUpdateDTO
+from src.infrastructure.repositories.equipment import EquipmentRepository
+from src.domain.entities.equipment import Equipment
 
 @dataclass
 class UpdateEquipmentCommand(Command):
-    equipment_id: str
-    dto: UpdateEquipmentDTO
+    equipment_id: int
+    dto: EquipmentUpdateDTO
 
 class UpdateEquipmentHandler(CommandHandler[UpdateEquipmentCommand]):
     def __init__(self, repository: EquipmentRepository):

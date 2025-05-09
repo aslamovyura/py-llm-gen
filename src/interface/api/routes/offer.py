@@ -7,13 +7,13 @@ from src.application.use_cases.offer.commands.update_offer import UpdateOfferCom
 from src.application.use_cases.offer.commands.delete_offer import DeleteOfferCommand, DeleteOfferHandler
 from src.domain.entities.offer import Offer
 from src.application.dto.offer import OfferCreateDTO, OfferUpdateDTO
-from src.infrastructure.di.container import Container
+from src.interface.api.dependencies import resolve_handler
 
 router = APIRouter(prefix="/offers", tags=["offers"])
 
 @router.get("/", response_model=List[Offer])
 async def list_offers(
-    handler: ListOffersHandler = Depends(Container.resolve(ListOffersHandler))
+    handler: ListOffersHandler = Depends(resolve_handler(ListOffersHandler))
 ):
     query = ListOffersQuery()
     offers = await handler.handle(query)
@@ -22,7 +22,7 @@ async def list_offers(
 @router.get("/{offer_id}", response_model=Offer)
 async def get_offer(
     offer_id: str,
-    handler: GetOfferHandler = Depends(Container.resolve(GetOfferHandler))
+    handler: GetOfferHandler = Depends(resolve_handler(GetOfferHandler))
 ):
     query = GetOfferQuery(offer_id=offer_id)
     offer = await handler.handle(query)
@@ -33,9 +33,9 @@ async def get_offer(
 @router.post("/", response_model=Offer, status_code=201)
 async def create_offer(
     offer_data: OfferCreateDTO,
-    handler: CreateOfferHandler = Depends(Container.resolve(CreateOfferHandler))
+    handler: CreateOfferHandler = Depends(resolve_handler(CreateOfferHandler))
 ):
-    command = CreateOfferCommand(**offer_data.dict())
+    command = CreateOfferCommand(dto=offer_data)
     offer = await handler.handle(command)
     return offer
 
@@ -43,9 +43,9 @@ async def create_offer(
 async def update_offer(
     offer_id: str,
     offer_data: OfferUpdateDTO,
-    handler: UpdateOfferHandler = Depends(Container.resolve(UpdateOfferHandler))
+    handler: UpdateOfferHandler = Depends(resolve_handler(UpdateOfferHandler))
 ):
-    command = UpdateOfferCommand(offer_id=offer_id, **offer_data.dict())
+    command = UpdateOfferCommand(offer_id=offer_id, dto=offer_data)
     offer = await handler.handle(command)
     if not offer:
         raise HTTPException(status_code=404, detail="Offer not found")
@@ -54,7 +54,7 @@ async def update_offer(
 @router.delete("/{offer_id}", status_code=204)
 async def delete_offer(
     offer_id: str,
-    handler: DeleteOfferHandler = Depends(Container.resolve(DeleteOfferHandler))
+    handler: DeleteOfferHandler = Depends(resolve_handler(DeleteOfferHandler))
 ):
     command = DeleteOfferCommand(offer_id=offer_id)
     await handler.handle(command) 

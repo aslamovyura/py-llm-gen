@@ -3,6 +3,7 @@ from typing import Generic, TypeVar, Optional, Any
 
 InputType = TypeVar("InputType")
 OutputType = TypeVar("OutputType")
+T = TypeVar('T')
 
 class BaseUseCase(ABC, Generic[InputType, OutputType]):
     @abstractmethod

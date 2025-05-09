@@ -1,12 +1,13 @@
 from dataclasses import dataclass
+
+from src.infrastructure.repositories.offer import OfferRepository
 from ...base import Command, CommandHandler
-from ....dto.offer import CreateOfferDTO
-from ....repositories.offer import OfferRepository
-from ....entities.offer import Offer
+from ....dto.offer import OfferCreateDTO
+from src.domain.entities.offer import Offer
 
 @dataclass
 class CreateOfferCommand(Command):
-    dto: CreateOfferDTO
+    dto: OfferCreateDTO
 
 class CreateOfferHandler(CommandHandler[CreateOfferCommand]):
     def __init__(self, repository: OfferRepository):

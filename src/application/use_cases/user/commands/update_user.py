@@ -1,15 +1,15 @@
 from dataclasses import dataclass
 from typing import Optional
 from ...base import Command, CommandHandler
-from ....dto.user import UpdateUserDTO
-from ....repositories.user import UserRepository
-from ....entities.user import User
+from src.application.dto.user import UserUpdateDTO
+from src.infrastructure.repositories.user import UserRepository
+from src.domain.entities.user import User
 from src.infrastructure.di.dependencies import inject_repository
 
 @dataclass
 class UpdateUserCommand(Command):
     user_id: str
-    dto: UpdateUserDTO
+    dto: UserUpdateDTO
 
 class UpdateUserHandler(CommandHandler[UpdateUserCommand]):
     @inject_repository('user')

@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from ...base import Command, CommandHandler
-from ....dto.user import CreateUserDTO
-from ....repositories.user import UserRepository
-from ....entities.user import User
+from src.application.dto.user import UserCreateDTO
+from src.infrastructure.repositories.user import UserRepository
+from src.domain.entities.user import User
 from src.infrastructure.di.dependencies import inject_repository
 
 @dataclass
 class CreateUserCommand(Command):
-    dto: CreateUserDTO
+    dto: UserCreateDTO
 
 class CreateUserHandler(CommandHandler[CreateUserCommand]):
     @inject_repository('user')

@@ -2,10 +2,10 @@ from typing import Optional, List, Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from src.domain.entities.client import Client
-from src.infrastructure.database.models.client import ClientModel
+from src.infrastructure.database.models import Client as ClientModel
 from .base_sql import BaseSQLRepository
 
-class ClientSQLRepository(BaseSQLRepository[ClientModel, Client]):
+class ClientRepository(BaseSQLRepository[ClientModel, Client]):
     def __init__(self, session: AsyncSession):
         super().__init__(session, ClientModel)
 

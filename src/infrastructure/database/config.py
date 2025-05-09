@@ -19,10 +19,12 @@ DATABASE_URL = os.getenv(
     f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
 
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+
 # Create async engine
 engine = create_async_engine(
     DATABASE_URL,
-    echo=os.getenv("DEBUG", "False").lower() == "true",
+    echo=DEBUG,
     future=True
 )
 

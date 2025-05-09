@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from ...base import Command, CommandHandler
-from ....repositories.request import RequestRepository
+from src.infrastructure.repositories.request import RequestRepository
 
 @dataclass
 class DeleteRequestCommand(Command):

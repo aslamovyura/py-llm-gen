@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from typing import Optional
 from ...base import Command, CommandHandler
-from ....dto.offer import UpdateOfferDTO
-from ....repositories.offer import OfferRepository
-from ....entities.offer import Offer
+from src.application.dto.offer import OfferUpdateDTO
+from src.infrastructure.repositories.offer import OfferRepository
+from src.domain.entities.offer import Offer
 
 @dataclass
 class UpdateOfferCommand(Command):
-    offer_id: str
-    dto: UpdateOfferDTO
+    offer_id: int
+    dto: OfferUpdateDTO
 
 class UpdateOfferHandler(CommandHandler[UpdateOfferCommand]):
     def __init__(self, repository: OfferRepository):

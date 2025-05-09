@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional, List
 from ...base import Query, QueryHandler
-from ....repositories.user import UserRepository
-from ....entities.user import User
+from src.infrastructure.repositories.user import UserRepository
+from src.domain.entities.user import User
 from src.infrastructure.di.dependencies import inject_repository
 
 @dataclass

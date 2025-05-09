@@ -1,14 +1,13 @@
 from dataclasses import dataclass
-from datetime import datetime
-from typing import Optional, List, Dict
+
+from src.domain.entities.equipment import Equipment
+from src.infrastructure.repositories.equipment import EquipmentRepository
 from ...base import Command, CommandHandler
-from ....dto.equipment import CreateEquipmentDTO
-from ....repositories.equipment import EquipmentRepository
-from ....entities.equipment import Equipment
+from src.application.dto.equipment import EquipmentCreateDTO
 
 @dataclass
 class CreateEquipmentCommand(Command):
-    dto: CreateEquipmentDTO
+    dto: EquipmentCreateDTO
 
 class CreateEquipmentHandler(CommandHandler[CreateEquipmentCommand]):
     def __init__(self, repository: EquipmentRepository):

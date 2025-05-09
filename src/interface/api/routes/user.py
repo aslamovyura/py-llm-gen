@@ -8,13 +8,13 @@ from src.application.use_cases.user.commands.update_user import UpdateUserComman
 from src.application.use_cases.user.commands.delete_user import DeleteUserCommand, DeleteUserHandler
 from src.domain.entities.user import User
 from src.application.dto.user import UserCreateDTO, UserUpdateDTO
-from src.infrastructure.di.container import Container
+from src.interface.api.dependencies import resolve_handler
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("/", response_model=List[User])
 async def list_users(
-    handler: ListUsersHandler = Depends(Container.resolve(ListUsersHandler))
+    handler: ListUsersHandler = Depends(resolve_handler(ListUsersHandler))
 ):
     query = ListUsersQuery()
     users = await handler.handle(query)
@@ -23,7 +23,7 @@ async def list_users(
 @router.get("/{user_id}", response_model=User)
 async def get_user(
     user_id: str,
-    handler: GetUserHandler = Depends(Container.resolve(GetUserHandler))
+    handler: GetUserHandler = Depends(resolve_handler(GetUserHandler))
 ):
     query = GetUserQuery(user_id=user_id)
     user = await handler.handle(query)
@@ -34,7 +34,7 @@ async def get_user(
 @router.get("/username/{username}", response_model=User)
 async def get_user_by_username(
     username: str,
-    handler: GetUserByUsernameHandler = Depends(Container.resolve(GetUserByUsernameHandler))
+    handler: GetUserByUsernameHandler = Depends(resolve_handler(GetUserByUsernameHandler))
 ):
     query = GetUserByUsernameQuery(username=username)
     user = await handler.handle(query)
@@ -45,9 +45,9 @@ async def get_user_by_username(
 @router.post("/", response_model=User, status_code=201)
 async def create_user(
     user_data: UserCreateDTO,
-    handler: CreateUserHandler = Depends(Container.resolve(CreateUserHandler))
+    handler: CreateUserHandler = Depends(resolve_handler(CreateUserHandler))
 ):
-    command = CreateUserCommand(**user_data.dict())
+    command = CreateUserCommand(dto=user_data)
     user = await handler.handle(command)
     return user
 
@@ -55,9 +55,9 @@ async def create_user(
 async def update_user(
     user_id: str,
     user_data: UserUpdateDTO,
-    handler: UpdateUserHandler = Depends(Container.resolve(UpdateUserHandler))
+    handler: UpdateUserHandler = Depends(resolve_handler(UpdateUserHandler))
 ):
-    command = UpdateUserCommand(user_id=user_id, **user_data.dict())
+    command = UpdateUserCommand(user_id=user_id, dto=user_data)
     user = await handler.handle(command)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -66,7 +66,7 @@ async def update_user(
 @router.delete("/{user_id}", status_code=204)
 async def delete_user(
     user_id: str,
-    handler: DeleteUserHandler = Depends(Container.resolve(DeleteUserHandler))
+    handler: DeleteUserHandler = Depends(resolve_handler(DeleteUserHandler))
 ):
     command = DeleteUserCommand(user_id=user_id)
     await handler.handle(command) 

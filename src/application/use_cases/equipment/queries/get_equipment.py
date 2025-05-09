@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 from typing import Optional
+
+from src.domain.entities.equipment import Equipment
+from src.infrastructure.repositories.equipment import EquipmentRepository
 from ...base import Query, QueryHandler
-from ....repositories.equipment import EquipmentRepository
-from ....entities.equipment import Equipment
 
 @dataclass
 class GetEquipmentQuery(Query):
-    equipment_id: str
+    equipment_id: int
 
 class GetEquipmentHandler(QueryHandler[GetEquipmentQuery]):
     def __init__(self, repository: EquipmentRepository):

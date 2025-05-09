@@ -1,6 +1,7 @@
 from dataclasses import dataclass
+
+from src.infrastructure.repositories.client import ClientRepository
 from ...base import Command, CommandHandler
-from ....repositories.client import ClientRepository
 
 @dataclass
 class DeleteClientCommand(Command):

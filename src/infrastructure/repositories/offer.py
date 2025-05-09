@@ -2,10 +2,10 @@ from typing import Optional, List, Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from src.domain.entities.offer import Offer
-from src.infrastructure.database.models.offer import OfferModel
+from src.infrastructure.database.models import Offer as OfferModel
 from .base_sql import BaseSQLRepository
 
-class OfferSQLRepository(BaseSQLRepository[OfferModel, Offer]):
+class OfferRepository(BaseSQLRepository[OfferModel, Offer]):
     def __init__(self, session: AsyncSession):
         super().__init__(session, OfferModel)
 

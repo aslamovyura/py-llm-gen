@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional, List
+
+from src.domain.entities.equipment import Equipment
+from src.infrastructure.repositories.equipment import EquipmentRepository
 from ...base import Query, QueryHandler
-from ....repositories.equipment import EquipmentRepository
-from ....entities.equipment import Equipment
 
 @dataclass
 class ListEquipmentQuery(Query):

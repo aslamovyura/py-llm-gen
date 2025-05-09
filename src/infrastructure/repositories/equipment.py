@@ -2,10 +2,10 @@ from typing import Optional, List, Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from src.domain.entities.equipment import Equipment
-from src.infrastructure.database.models.equipment import EquipmentModel
+from src.infrastructure.database.models import Equipment as EquipmentModel
 from .base_sql import BaseSQLRepository
 
-class EquipmentSQLRepository(BaseSQLRepository[EquipmentModel, Equipment]):
+class EquipmentRepository(BaseSQLRepository[EquipmentModel, Equipment]):
     def __init__(self, session: AsyncSession):
         super().__init__(session, EquipmentModel)
 

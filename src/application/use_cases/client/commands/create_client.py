@@ -1,12 +1,14 @@
 from dataclasses import dataclass
+
+from src.domain.entities.client import Client
+from src.infrastructure.repositories.client import ClientRepository
 from ...base import Command, CommandHandler
-from ....dto.client import CreateClientDTO
-from ....repositories.client import ClientRepository
-from ....entities.client import Client
+from ....dto.client import ClientCreateDTO
+
 
 @dataclass
 class CreateClientCommand(Command):
-    dto: CreateClientDTO
+    dto: ClientCreateDTO
 
 class CreateClientHandler(CommandHandler[CreateClientCommand]):
     def __init__(self, repository: ClientRepository):

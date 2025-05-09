@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from typing import Optional
 from ...base import Command, CommandHandler
-from ....dto.request import UpdateRequestDTO
-from ....repositories.request import RequestRepository
-from ....entities.request import Request
+from src.application.dto.request import RequestUpdateDTO
+from src.infrastructure.repositories.request import RequestRepository
+from src.domain.entities.request import Request
 
 @dataclass
 class UpdateRequestCommand(Command):
     request_id: str
-    dto: UpdateRequestDTO
+    dto: RequestUpdateDTO
 
 class UpdateRequestHandler(CommandHandler[UpdateRequestCommand]):
     def __init__(self, repository: RequestRepository):

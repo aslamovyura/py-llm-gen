@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from ...base import Command, CommandHandler
-from ....repositories.offer import OfferRepository
+from src.infrastructure.repositories.offer import OfferRepository
 
 @dataclass
 class DeleteOfferCommand(Command):

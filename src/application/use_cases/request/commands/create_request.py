@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from ...base import Command, CommandHandler
-from ....dto.request import CreateRequestDTO
-from ....repositories.request import RequestRepository
-from ....entities.request import Request
+from src.application.dto.request import RequestCreateDTO
+from src.infrastructure.repositories.request import RequestRepository
+from src.domain.entities.request import Request
 
 @dataclass
 class CreateRequestCommand(Command):
-    dto: CreateRequestDTO
+    dto: RequestCreateDTO
 
 class CreateRequestHandler(CommandHandler[CreateRequestCommand]):
     def __init__(self, repository: RequestRepository):

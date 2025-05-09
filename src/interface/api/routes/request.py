@@ -7,13 +7,13 @@ from src.application.use_cases.request.commands.update_request import UpdateRequ
 from src.application.use_cases.request.commands.delete_request import DeleteRequestCommand, DeleteRequestHandler
 from src.domain.entities.request import Request
 from src.application.dto.request import RequestCreateDTO, RequestUpdateDTO
-from src.infrastructure.di.container import Container
+from src.interface.api.dependencies import resolve_handler
 
 router = APIRouter(prefix="/requests", tags=["requests"])
 
 @router.get("/", response_model=List[Request])
 async def list_requests(
-    handler: ListRequestsHandler = Depends(Container.resolve(ListRequestsHandler))
+    handler: ListRequestsHandler = Depends(resolve_handler(ListRequestsHandler))
 ):
     query = ListRequestsQuery()
     requests = await handler.handle(query)
@@ -22,7 +22,7 @@ async def list_requests(
 @router.get("/{request_id}", response_model=Request)
 async def get_request(
     request_id: str,
-    handler: GetRequestHandler = Depends(Container.resolve(GetRequestHandler))
+    handler: GetRequestHandler = Depends(resolve_handler(GetRequestHandler))
 ):
     query = GetRequestQuery(request_id=request_id)
     request = await handler.handle(query)
@@ -33,9 +33,9 @@ async def get_request(
 @router.post("/", response_model=Request, status_code=201)
 async def create_request(
     request_data: RequestCreateDTO,
-    handler: CreateRequestHandler = Depends(Container.resolve(CreateRequestHandler))
+    handler: CreateRequestHandler = Depends(resolve_handler(CreateRequestHandler))
 ):
-    command = CreateRequestCommand(**request_data.dict())
+    command = CreateRequestCommand(dto=request_data)
     request = await handler.handle(command)
     return request
 
@@ -43,9 +43,9 @@ async def create_request(
 async def update_request(
     request_id: str,
     request_data: RequestUpdateDTO,
-    handler: UpdateRequestHandler = Depends(Container.resolve(UpdateRequestHandler))
+    handler: UpdateRequestHandler = Depends(resolve_handler(UpdateRequestHandler))
 ):
-    command = UpdateRequestCommand(request_id=request_id, **request_data.dict())
+    command = UpdateRequestCommand(request_id=request_id, dto=request_data)
     request = await handler.handle(command)
     if not request:
         raise HTTPException(status_code=404, detail="Request not found")
@@ -54,7 +54,7 @@ async def update_request(
 @router.delete("/{request_id}", status_code=204)
 async def delete_request(
     request_id: str,
-    handler: DeleteRequestHandler = Depends(Container.resolve(DeleteRequestHandler))
+    handler: DeleteRequestHandler = Depends(resolve_handler(DeleteRequestHandler))
 ):
     command = DeleteRequestCommand(request_id=request_id)
     await handler.handle(command) 
