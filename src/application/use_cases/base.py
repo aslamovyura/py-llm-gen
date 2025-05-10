@@ -11,14 +11,12 @@ class BaseUseCase(ABC, Generic[InputType, OutputType]):
         pass 
 
 class Command(ABC):
-    @abstractmethod
-    def execute(self) -> Any:
-        pass
+    """Base class for all commands. Commands are handled by CommandHandlers."""
+    pass
 
 class Query(ABC):
-    @abstractmethod
-    def execute(self) -> Any:
-        pass
+    """Base class for all queries. Queries are handled by QueryHandlers."""
+    pass
 
 class CommandHandler(ABC, Generic[T]):
     @abstractmethod
