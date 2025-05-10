@@ -3,7 +3,6 @@ from typing import Optional, List
 from ...base import Query, QueryHandler
 from src.infrastructure.repositories.user import UserRepository
 from src.domain.entities.user import User
-from src.infrastructure.di.dependencies import inject_repository
 
 @dataclass
 class ListUsersQuery(Query):
@@ -14,8 +13,10 @@ class ListUsersQuery(Query):
     limit: int = 100
 
 class ListUsersHandler(QueryHandler[ListUsersQuery]):
-    @inject_repository('user')
-    async def handle(self, query: ListUsersQuery, user: UserRepository) -> List[User]:
+    def __init__(self, repository: UserRepository):
+        self.repository = repository
+
+    async def handle(self, query: ListUsersQuery) -> List[User]:
         filters = {}
         if query.username:
             filters['username__icontains'] = query.username
@@ -24,4 +25,4 @@ class ListUsersHandler(QueryHandler[ListUsersQuery]):
         if query.role:
             filters['role'] = query.role
 
-        return await user.list(filters=filters, skip=query.skip, limit=query.limit) 
+        return await self.repository.list(filters=filters, skip=query.skip, limit=query.limit) 

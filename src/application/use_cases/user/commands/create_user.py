@@ -3,15 +3,16 @@ from ...base import Command, CommandHandler
 from src.application.dto.user import UserCreateDTO
 from src.infrastructure.repositories.user import UserRepository
 from src.domain.entities.user import User
-from src.infrastructure.di.dependencies import inject_repository
 
 @dataclass
 class CreateUserCommand(Command):
     dto: UserCreateDTO
 
 class CreateUserHandler(CommandHandler[CreateUserCommand]):
-    @inject_repository('user')
-    async def handle(self, command: CreateUserCommand, user: UserRepository) -> User:
+    def __init__(self, repository: UserRepository):
+        self.repository = repository
+
+    async def handle(self, command: CreateUserCommand) -> User:
         user_entity = User(
             username=command.dto.username,
             email=command.dto.email,
@@ -20,4 +21,4 @@ class CreateUserHandler(CommandHandler[CreateUserCommand]):
             role=command.dto.role,
             phone_number=command.dto.phone_number
         )
-        return await user.create(user_entity) 
+        return await self.repository.create(user_entity) 

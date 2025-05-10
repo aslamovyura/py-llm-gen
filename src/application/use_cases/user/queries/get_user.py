@@ -3,13 +3,14 @@ from typing import Optional
 from ...base import Query, QueryHandler
 from src.infrastructure.repositories.user import UserRepository
 from src.domain.entities.user import User
-from src.infrastructure.di.dependencies import inject_repository
 
 @dataclass
 class GetUserQuery(Query):
     user_id: str
 
 class GetUserHandler(QueryHandler[GetUserQuery]):
-    @inject_repository('user')
-    async def handle(self, query: GetUserQuery, user: UserRepository) -> Optional[User]:
-        return await user.get_by_id(query.user_id) 
+    def __init__(self, repository: UserRepository):
+        self.repository = repository
+
+    async def handle(self, query: GetUserQuery) -> Optional[User]:
+        return await self.repository.get_by_id(query.user_id) 

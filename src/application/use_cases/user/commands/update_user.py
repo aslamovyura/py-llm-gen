@@ -4,7 +4,6 @@ from ...base import Command, CommandHandler
 from src.application.dto.user import UserUpdateDTO
 from src.infrastructure.repositories.user import UserRepository
 from src.domain.entities.user import User
-from src.infrastructure.di.dependencies import inject_repository
 
 @dataclass
 class UpdateUserCommand(Command):
@@ -12,9 +11,11 @@ class UpdateUserCommand(Command):
     dto: UserUpdateDTO
 
 class UpdateUserHandler(CommandHandler[UpdateUserCommand]):
-    @inject_repository('user')
-    async def handle(self, command: UpdateUserCommand, user: UserRepository) -> Optional[User]:
-        user_entity = await user.get_by_id(command.user_id)
+    def __init__(self, repository: UserRepository):
+        self.repository = repository
+
+    async def handle(self, command: UpdateUserCommand) -> Optional[User]:
+        user_entity = await self.repository.get_by_id(command.user_id)
         if not user_entity:
             return None
 
@@ -22,4 +23,4 @@ class UpdateUserHandler(CommandHandler[UpdateUserCommand]):
         for field, value in update_data.items():
             setattr(user_entity, field, value)
 
-        return await user.update(user_entity) 
+        return await self.repository.update(user_entity) 

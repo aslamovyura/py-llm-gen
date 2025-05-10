@@ -12,7 +12,7 @@ class Offer(BaseEntity):
     quantity: int = Field(..., gt=0)
     delivery_date: Optional[datetime] = None
     warranty_period_months: int = Field(..., ge=0)
-    status: str = Field(..., pattern="^(draft|pending|accepted|rejected|cancelled)$")
+    status: str = Field(..., pattern="^(draft|pending|accepted|rejected|cancelled|expired)$")
     terms_and_conditions: Optional[str] = None
     notes: Optional[str] = None
     additional_services: List[str] = Field(default_factory=list)
